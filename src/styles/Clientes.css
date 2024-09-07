@@ -1,0 +1,69 @@
+.clientes-container {
+    padding: 20px;
+  }
+  
+  .clientes-controls {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .clientes-controls button {
+    padding: 10px 20px;
+    margin: 0 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #2C3E50;
+    color: #ffffff;
+    cursor: pointer;
+  }
+  
+  .clientes-controls button:hover {
+    background-color: #1A242F;
+  }
+  
+  .clientes-controls input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .clientes-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .clientes-table th, .clientes-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .clientes-table th {
+    background-color: #2C3E50;
+    color: white;
+  }
+  
+  .clientes-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  .clientes-table tr:hover {
+    background-color: #ddd;
+  }
+  
+  .clientes-table button {
+    padding: 5px 10px;
+    margin: 0 5px;
+    border: none;
+    border-radius: 4px;
+    background-color: #2C3E50;
+    color: #ffffff;
+    cursor: pointer;
+  }
+  
+  .clientes-table button:hover {
+    background-color: #1A242F;
+  }
+  

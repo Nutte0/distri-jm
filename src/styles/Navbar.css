@@ -1,0 +1,45 @@
+@import "~@fortawesome/fontawesome-free/css/all.min.css";
+
+
+.navbar {
+  background-color: #2C3E50;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between; /* Distribuye el espacio entre los elementos */
+  align-items: center;    /* Alinea los elementos verticalmente en el centro */
+  width: 100%;            /* Asegura que la barra de navegación ocupe todo el ancho de la página */
+}
+
+.navbar-logo {
+  flex: 1;                /* Ocupa el espacio disponible */
+}
+
+.navbar-logo h1 {
+  color: #ffffff;
+  font-size: 24px;
+  margin: 0;              /* Elimina márgenes predeterminados */
+}
+
+.secciones {
+  display: flex;          /* Usa Flexbox para alinear los elementos horizontalmente */
+  justify-content: center; /* Centra los elementos dentro del contenedor */
+  align-items: center;    /* Alinea los elementos verticalmente en el centro */
+  gap: 20px;              /* Espacio entre los elementos */
+  flex: 2;                /* Ocupa el espacio disponible */
+}
+
+.secciones a {
+  color: #ffffff;
+  font-size: 24px;
+  text-decoration: none;  /* Elimina el subrayado de los enlaces */
+  margin: 0;              /* Elimina los márgenes predeterminados */
+}
+
+.secciones a:hover {
+  text-decoration: underline; /* Subraya el texto al pasar el ratón sobre el enlace */
+}
+
+.Menu {
+  color: #ffffff;
+  flex: 1;                /* Ocupa el espacio disponible */
+}
