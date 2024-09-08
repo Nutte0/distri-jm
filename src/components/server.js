@@ -2,8 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const supabase = require('./db');
-require('dotenv').config(); 
+const supabase = require('./db'); // Asegúrate de importar el cliente de Supabase
+require('dotenv').config(); // Asegúrate de cargar las variables de entorno
 
 const app = express();
 const port = process.env.PORT || 5000;
