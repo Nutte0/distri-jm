@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { supabase } from './supabaseClient'; 
 import '../styles/Clientes.css';
 
 const Clientes = () => {
@@ -17,11 +17,12 @@ const Clientes = () => {
   });
 
   useEffect(() => {
-    // Obtener los clientes desde la API
+    // Obtener los clientes desde Supabase
     const fetchClientes = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/clientes');
-        setClientes(response.data);
+        const { data, error } = await supabase.from('clientes').select('*');
+        if (error) throw error;
+        setClientes(data);
       } catch (error) {
         console.error('Error al obtener los clientes', error);
       }
@@ -32,7 +33,8 @@ const Clientes = () => {
 
   const handleAdd = async () => {
     try {
-      await axios.post('http://localhost:5000/clientes', nuevoCliente);
+      const { data, error } = await supabase.from('clientes').insert([nuevoCliente]);
+      if (error) throw error;
       setNuevoCliente({
         control: '',
         id: '',
@@ -44,6 +46,7 @@ const Clientes = () => {
         pago: '',
         correo: '',
       });
+      setClientes([...clientes, ...data]);
       alert('Cliente agregado');
     } catch (error) {
       console.error('Error al agregar cliente', error);
@@ -56,7 +59,8 @@ const Clientes = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/clientes/${id}`);
+      const { error } = await supabase.from('clientes').delete().eq('id', id);
+      if (error) throw error;
       setClientes(clientes.filter((cliente) => cliente.id !== id));
       alert('Cliente eliminado');
     } catch (error) {

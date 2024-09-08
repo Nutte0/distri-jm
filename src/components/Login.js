@@ -1,25 +1,50 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
+import { supabase } from './supabaseClient'; // Asegúrate de que la ruta es correcta
 import '../styles/Login.css';
 
 const Login = () => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { id, value } = e.target;
-    if (id === 'username') setUsername(value);
+    if (id === 'email') setEmail(value);
     if (id === 'password') setPassword(value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Login submitted', { username, password });
+    try {
+      // Buscar el correo electrónico asociado al nombre de usuario
+      const { data: user, error: fetchError } = await supabase
+        .from('users')
+        .select('email')
+        .eq('email', email) 
+        .single(); 
+
+      if (fetchError) throw fetchError;
+
+      if (!user) throw new Error('User not found');
+
+      // Iniciar sesión con el correo electrónico y la clave
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: user.email,
+        password: password,
+      });
+
+      if (error) throw error;
+
+      console.log('Login successful', data);
+      navigate('/Home');
+    } catch (error) {
+      console.error('Login error:', error.message);
+    }
   };
 
   const handleRegisterClick = () => {
-    navigate('/register'); 
+    navigate('/register');
   };
 
   return (
@@ -27,13 +52,13 @@ const Login = () => {
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
         <div className="input-group">
-          <label htmlFor="username">Nombre</label>
+          <label htmlFor="email">Correo Electrónico</label>
           <input
-            type="text"
-            id="username"
-            value={username}
+            type="email"
+            id="email"
+            value={email}
             onChange={handleChange}
-            placeholder="Ingresa tu nombre"
+            placeholder="Ingresa tu correo electrónico"
           />
         </div>
         <div className="input-group">
