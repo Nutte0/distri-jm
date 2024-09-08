@@ -5,6 +5,8 @@ import Login from './components/Login';
 import Register from './components/Register';
 import Home from './components/Home';
 import Clientes from './components/Clientes';
+import Empleados from './components/Empleados';
+import Boletas from './components/Boletas';
 
 const App = () => {
   return (
@@ -34,8 +36,26 @@ const App = () => {
           } 
         />
 
-       
-      </Routes>
+          <Route 
+          path="/empleados" 
+          element={
+            <>
+              <Navbar />
+              <Empleados/>
+            </>
+          } 
+        />
+   
+          <Route 
+          path="/Boletas" 
+          element={
+            <>
+              <Navbar />
+              <Boletas/>
+            </>
+          } 
+        />
+        </Routes>
     </Router>
   );
 };

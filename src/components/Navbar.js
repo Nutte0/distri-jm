@@ -1,8 +1,24 @@
 import React from 'react';
 import { FaUsers, FaUserTie, FaTicketAlt, FaBars } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom'; // Importa useNavigate
 import '../styles/Navbar.css';
 
 const Navbar = () => {
+  const navigate = useNavigate();
+  
+  // Redirigir paginas
+  const handleClientesClick = () => {
+    navigate('/clientes'); 
+  };
+
+  const handleEmpleadosClick = () => {
+    navigate('/empleados');
+  };
+
+  const handleBoletasClick = () => {
+    navigate('/boletas'); 
+  };
+
   return (
     <nav className="navbar">
       <div className="navbar-logo">
@@ -10,9 +26,9 @@ const Navbar = () => {
       </div>
   
       <div className="secciones">
-        <a href="#"><i className="fas fa-users"></i> Clientes</a>
-        <a href="#"><i className="fas fa-user-tie"></i> Empleados</a>
-        <a href="#"><i className="fas fa-ticket-alt"></i> Boletas</a>
+        <a onClick={handleClientesClick}><i className="fas fa-users"></i> Clientes</a>
+        <a onClick={handleEmpleadosClick}><i className="fas fa-user-tie"></i> Empleados</a>
+        <a onClick={handleBoletasClick}><i className="fas fa-ticket-alt"></i> Boletas</a>
       </div>
       
       <div className="Menu">

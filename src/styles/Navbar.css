@@ -5,41 +5,41 @@
   background-color: #2C3E50;
   padding: 10px;
   display: flex;
-  justify-content: space-between; /* Distribuye el espacio entre los elementos */
-  align-items: center;    /* Alinea los elementos verticalmente en el centro */
-  width: 100%;            /* Asegura que la barra de navegación ocupe todo el ancho de la página */
+  justify-content: space-between; 
+  align-items: center;    
+  width: 100%;            
 }
 
 .navbar-logo {
-  flex: 1;                /* Ocupa el espacio disponible */
+  flex: 1;                
 }
 
 .navbar-logo h1 {
   color: #ffffff;
   font-size: 24px;
-  margin: 0;              /* Elimina márgenes predeterminados */
+  margin: 0;              
 }
 
 .secciones {
-  display: flex;          /* Usa Flexbox para alinear los elementos horizontalmente */
-  justify-content: center; /* Centra los elementos dentro del contenedor */
-  align-items: center;    /* Alinea los elementos verticalmente en el centro */
-  gap: 20px;              /* Espacio entre los elementos */
-  flex: 2;                /* Ocupa el espacio disponible */
+  display: flex;          
+  justify-content: center;
+  align-items: center;    
+  gap: 20px;              
+  flex: 2;                
 }
 
 .secciones a {
   color: #ffffff;
   font-size: 24px;
-  text-decoration: none;  /* Elimina el subrayado de los enlaces */
-  margin: 0;              /* Elimina los márgenes predeterminados */
+  text-decoration: none;  
+  margin: 0;              
 }
 
 .secciones a:hover {
-  text-decoration: underline; /* Subraya el texto al pasar el ratón sobre el enlace */
+  text-decoration: underline;
 }
 
 .Menu {
   color: #ffffff;
-  flex: 1;                /* Ocupa el espacio disponible */
+  flex: 1;                
 }

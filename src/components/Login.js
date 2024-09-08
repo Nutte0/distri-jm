@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from './supabaseClient'; // Asegúrate de que la ruta es correcta
+import { supabase } from './supabaseClient'; 
 import '../styles/Login.css';
 
 const Login = () => {
@@ -17,20 +17,9 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Buscar el correo electrónico asociado al nombre de usuario
-      const { data: user, error: fetchError } = await supabase
-        .from('users')
-        .select('email')
-        .eq('email', email) 
-        .single(); 
-
-      if (fetchError) throw fetchError;
-
-      if (!user) throw new Error('User not found');
-
       // Iniciar sesión con el correo electrónico y la clave
       const { data, error } = await supabase.auth.signInWithPassword({
-        email: user.email,
+        email: email,
         password: password,
       });
 

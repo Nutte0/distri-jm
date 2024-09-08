@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from './supabaseClient';
-import '../styles/Register.css'; 
+import '../styles/Register.css';
 
 const Register = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate(); 
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -18,21 +19,45 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Validar que la contraseña tenga al menos 6 caracteres
+    if (password.length < 6) {
+      setError('La contraseña debe tener al menos 6 caracteres.');
+      return;
+    }
     
     try {
-      // Registro en Supabase
-      const { data, error } = await supabase
-        .from('users')
-        .insert([{ username, email, password }]);
+      // Registro en Supabase Auth
+      const { user, error: authError } = await supabase.auth.signUp({
+        email: email,
+        password: password,
+      });
 
-      if (error) {
-        throw error;
+      if (authError) {
+        if (authError.message.includes('48 seconds')) {
+          setError('Por razones de seguridad, solo puedes intentar registrarte de nuevo después de 48 segundos.');
+        } else {
+          setError('Error de autenticación: ' + authError.message);
+        }
+        return;
       }
+
+      if (!user) {
+        setError('No se recibió ningún usuario en la respuesta.');
+        return;
+      }
+
+
+      const { data, error: dbError } = await supabase
+        .from('users')
+        .insert([{ username, email, user_id: user.id }]); 
+
+      if (dbError) throw dbError;
 
       console.log('Usuario registrado:', data);
       navigate('/Home'); 
     } catch (error) {
-      console.error('Error al registrar usuario:', error.message);
+      setError('Error al registrar usuario: ' + error.message);
     }
   };
 
@@ -71,6 +96,7 @@ const Register = () => {
           />
         </div>
         <button type="submit" className="btn">Registrarse</button>
+        {error && <p className="error-message">{error}</p>}
       </form>
     </div>
   );
