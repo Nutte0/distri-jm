@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from './supabaseClient';
+import bcrypt from 'bcryptjs'; // Importar bcrypt para hashear contraseñas
 import '../styles/Register.css';
 
 const Register = () => {
@@ -25,7 +26,7 @@ const Register = () => {
       setError('La contraseña debe tener al menos 6 caracteres.');
       return;
     }
-    
+
     try {
       // Registro en Supabase Auth
       const { user, error: authError } = await supabase.auth.signUp({
@@ -47,15 +48,23 @@ const Register = () => {
         return;
       }
 
+      // Hashear la contraseña antes de insertarla en la base de datos
+      const salt = bcrypt.genSaltSync(10);
+      const hashedPassword = bcrypt.hashSync(password, salt);
 
+      // Insertar el usuario en la tabla 'users'
       const { data, error: dbError } = await supabase
         .from('users')
-        .insert([{ username, email, user_id: user.id }]); 
+        .insert([{ 
+          username, 
+          email, 
+          password: hashedPassword // Guardar la contraseña hasheada
+        }]);
 
       if (dbError) throw dbError;
 
-      console.log('Usuario registrado:', data);
-      navigate('/Home'); 
+      console.log('Usuario registrado en la tabla users:', data);
+      navigate('/Home'); // Redirigir al usuario después del registro
     } catch (error) {
       setError('Error al registrar usuario: ' + error.message);
     }

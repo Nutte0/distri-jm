@@ -7,6 +7,7 @@ import Home from './components/Home';
 import Clientes from './components/Clientes';
 import Empleados from './components/Empleados';
 import Boletas from './components/Boletas';
+import ConfirmEmail from './components/ConfirmEmail';
 
 const App = () => {
   return (
@@ -46,6 +47,18 @@ const App = () => {
           } 
         />
    
+       
+          <Route 
+          path="/ConfirmEmail" 
+          element={
+            <>
+              <Navbar />
+              <ConfirmEmail/>
+            </>
+          } 
+        />
+   
+
           <Route 
           path="/Boletas" 
           element={

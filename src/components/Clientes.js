@@ -9,7 +9,6 @@ const Clientes = () => {
   const [clienteEditado, setClienteEditado] = useState(null); // Estado para el cliente a editar
   const [nuevoCliente, setNuevoCliente] = useState({
     control: '',
-    id: '',
     nombre: '',
     direccion: '',
     barrio: '',
@@ -101,7 +100,6 @@ const Clientes = () => {
   const resetForm = () => {
     setNuevoCliente({
       control: '',
-      id: '',
       nombre: '',
       direccion: '',
       barrio: '',
@@ -130,13 +128,7 @@ const Clientes = () => {
               value={nuevoCliente.control}
               onChange={handleInputChange}
             />
-            <input
-              type="text"
-              id="id"
-              placeholder="ID"
-              value={nuevoCliente.id}
-              onChange={handleInputChange}
-            />
+
             <input
               type="text"
               id="nombre"
@@ -206,7 +198,6 @@ const Clientes = () => {
         <thead>
           <tr>
             <th>Control</th>
-            <th>ID</th>
             <th>Nombre</th>
             <th>Dirección</th>
             <th>Barrio</th>
@@ -221,7 +212,6 @@ const Clientes = () => {
           {clientes.map((cliente) => (
             <tr key={cliente.id}>
               <td>{cliente.control}</td>
-              <td>{cliente.id}</td>
               <td>{cliente.nombre}</td>
               <td>{cliente.direccion}</td>
               <td>{cliente.barrio}</td>
