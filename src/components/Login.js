@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from './supabaseClient'; 
+import { supabase } from './supabaseClient';
 import '../styles/Login.css';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -16,8 +17,8 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(null);
     try {
-      // Iniciar sesión con el correo electrónico y la clave
       const { data, error } = await supabase.auth.signInWithPassword({
         email: email,
         password: password,
@@ -25,10 +26,15 @@ const Login = () => {
 
       if (error) throw error;
 
-      console.log('Login successful', data);
-      navigate('/Home');
+      if (data && data.user) {
+        console.log('Login successful', data);
+        navigate('/Home');
+      } else {
+        setError('No se recibió ningún usuario en la respuesta');
+      }
     } catch (error) {
       console.error('Login error:', error.message);
+      setError(error.message);
     }
   };
 
@@ -60,6 +66,7 @@ const Login = () => {
             placeholder="Ingresa tu clave"
           />
         </div>
+        {error && <div className="error-message">{error}</div>}
         <button type="submit" className="btn">Ingresar</button>
         <button type="button" className="btn btn-secondary" onClick={handleRegisterClick}>
           Crear cuenta nueva

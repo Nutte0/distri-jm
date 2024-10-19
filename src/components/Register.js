@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from './supabaseClient';
-import bcrypt from 'bcryptjs'; // Importar bcrypt para hashear contraseñas
 import '../styles/Register.css';
 
 const Register = () => {
@@ -20,53 +19,41 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
 
-    // Validar que la contraseña tenga al menos 6 caracteres
     if (password.length < 6) {
       setError('La contraseña debe tener al menos 6 caracteres.');
       return;
     }
 
     try {
-      // Registro en Supabase Auth
-      const { user, error: authError } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email: email,
         password: password,
+        options: {
+          data: {
+            username: username,
+          }
+        }
       });
 
-      if (authError) {
-        if (authError.message.includes('48 seconds')) {
-          setError('Por razones de seguridad, solo puedes intentar registrarte de nuevo después de 48 segundos.');
-        } else {
-          setError('Error de autenticación: ' + authError.message);
-        }
-        return;
+      if (error) throw error;
+
+      if (data && data.user) {
+        console.log('Usuario registrado:', data.user);
+        navigate('/Home');
+      } else {
+        setError('No se pudo completar el registro. Por favor, intenta de nuevo.');
       }
-
-      if (!user) {
-        setError('No se recibió ningún usuario en la respuesta.');
-        return;
-      }
-
-      // Hashear la contraseña antes de insertarla en la base de datos
-      const salt = bcrypt.genSaltSync(10);
-      const hashedPassword = bcrypt.hashSync(password, salt);
-
-      // Insertar el usuario en la tabla 'users'
-      const { data, error: dbError } = await supabase
-        .from('users')
-        .insert([{ 
-          username, 
-          email, 
-          password: hashedPassword // Guardar la contraseña hasheada
-        }]);
-
-      if (dbError) throw dbError;
-
-      console.log('Usuario registrado en la tabla users:', data);
-      navigate('/Home'); // Redirigir al usuario después del registro
     } catch (error) {
-      setError('Error al registrar usuario: ' + error.message);
+      console.error('Error de registro:', error);
+      if (error.message.includes('Email address') && error.message.includes('not authorized')) {
+        setError('Este correo electrónico no está autorizado para registrarse. Por favor, usa un correo electrónico diferente o contacta al administrador.');
+      } else if (error.message.includes('48 seconds')) {
+        setError('Por razones de seguridad, solo puedes intentar registrarte de nuevo después de 48 segundos.');
+      } else {
+        setError('Error al registrar usuario: ' + error.message);
+      }
     }
   };
 
@@ -82,6 +69,7 @@ const Register = () => {
             value={username}
             onChange={handleChange}
             placeholder="Ingresa tu nombre"
+            required
           />
         </div>
         <div className="input-group">
@@ -92,6 +80,7 @@ const Register = () => {
             value={email}
             onChange={handleChange}
             placeholder="Ingresa tu correo"
+            required
           />
         </div>
         <div className="input-group">
@@ -102,6 +91,7 @@ const Register = () => {
             value={password}
             onChange={handleChange}
             placeholder="Ingresa tu clave"
+            required
           />
         </div>
         <button type="submit" className="btn">Registrarse</button>
